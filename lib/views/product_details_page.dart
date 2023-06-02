@@ -26,6 +26,25 @@ class ProductDetailsPage extends StatelessWidget {
             Text(product.description, style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 20),
             Text('USD${product.price}', style: const TextStyle(fontSize: 20)),
+            Flexible(
+              flex: 2,
+              child: Container(),
+            ),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF9E007E), // Set the color of the button to purple
+                ),
+                onPressed: () {
+                  // Implement your functionality for adding to cart here
+                },
+                child: const Text('Add to Cart'),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Container(),
+            ),
           ],
         ),
       ),

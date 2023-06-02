@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),
-        backgroundColor: const Color(0xFF9E007E),// This sets the AppBar color to purple
+        backgroundColor: const Color(0xFF9E007E), // This sets the AppBar color to purple
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -45,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
+            const SizedBox(height: 50), // Add some more space before the login button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF9E007E), // Set the color of the button to purple

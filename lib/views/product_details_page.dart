@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba_json/viewmodels/product_viewmodel.dart';
 
 import '../models/product.dart';
 
@@ -26,6 +27,8 @@ class ProductDetailsPage extends StatelessWidget {
             Text(product.description, style: const TextStyle(fontSize: 20)),
             const SizedBox(height: 20),
             Text('USD${product.price}', style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
+            Text('Stock${product.stock}', style: const TextStyle(fontSize: 20)),
             Flexible(
               flex: 2,
               child: Container(),
@@ -36,7 +39,7 @@ class ProductDetailsPage extends StatelessWidget {
                   backgroundColor: const Color(0xFF9E007E), // Set the color of the button to purple
                 ),
                 onPressed: () {
-                  // Implement your functionality for adding to cart here
+                  ProductViewModel().bajarStock(product);
                 },
                 child: const Text('Add to Cart'),
               ),

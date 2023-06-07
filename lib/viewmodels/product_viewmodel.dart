@@ -81,6 +81,11 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
+   bajarStock (Product product) {
+    product.stock--;
+    notifyListeners();
+  }
+
   ProductViewModel() {
     fetchProducts();
   }

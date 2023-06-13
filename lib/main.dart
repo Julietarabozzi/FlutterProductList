@@ -4,12 +4,15 @@ import 'package:prueba_json/viewmodels/login_viewmodel.dart';
 import 'package:prueba_json/viewmodels/product_viewmodel.dart';
 import 'package:prueba_json/views/login_page.dart';
 
+import 'Services/login_service.dart';
+
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProductViewModel()),
-        ChangeNotifierProvider(create: (context) => LoginViewModel()),
+        ChangeNotifierProvider(create: (context) => LoginViewModel(loginService: LoginService())),
+
       ],
       child: const MyApp(),
     ),

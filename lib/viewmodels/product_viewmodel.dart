@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 import '../models/product.dart';
+import '../services/product_service.dart';
 
 class ProductViewModel extends ChangeNotifier {
   List<Product> _products = [];
@@ -13,24 +12,20 @@ class ProductViewModel extends ChangeNotifier {
 
   ValueNotifier<bool> hasSearched = ValueNotifier<bool>(false);
 
+  final ProductService _productService = ProductService();
+
   Future<void> fetchProducts() async {
     _isLoading = true;
     notifyListeners();
 
-    var url = Uri.parse('https://dummyjson.com/products');
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      var productsData = jsonDecode(response.body);
-      if (productsData is Map<String, dynamic> && productsData.containsKey('products')) {
-        _products = List<Product>.from((productsData['products'] as List).map((product) => Product.fromJson(product)));
-      }
-    } else {
-      throw Exception('Failed to load products');
+    try {
+      _products = await _productService.fetchProducts();
+    } catch (e) {
+      print(e);
     }
 
     _isLoading = false;
-    hasSearched.value = false; // Agregamos esta línea
+    hasSearched.value = false; 
     notifyListeners();
   }
 
@@ -38,20 +33,14 @@ class ProductViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    var url = Uri.parse('https://dummyjson.com/products/search?q=$searchTerm');
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      var productsData = jsonDecode(response.body);
-      if (productsData is Map<String, dynamic> && productsData.containsKey('products')) {
-        _products = List<Product>.from((productsData['products'] as List).map((product) => Product.fromJson(product)));
-      }
-    } else {
-      throw Exception('Failed to load products');
+    try {
+      _products = await _productService.searchProducts(searchTerm);
+    } catch (e) {
+      print(e);
     }
 
     _isLoading = false;
-    hasSearched.value = true; // Agregamos esta línea
+    hasSearched.value = true;
     notifyListeners();
   }
 
@@ -59,29 +48,20 @@ class ProductViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    var url = Uri.parse('https://dummyjson.com/products/$id');
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      try {
-        var productData = Product.fromJson(jsonDecode(response.body));
-        _isLoading = false;
-        notifyListeners();
-        return productData;
-      } catch (e) {
-        print(e);
-        _isLoading = false;
-        notifyListeners();
-        return null;
-      }
-    } else {
+    try {
+      var product = await _productService.fetchProductById(id);
       _isLoading = false;
       notifyListeners();
-      throw Exception('Failed to load product');
+      return product;
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      print(e);
+      return null;
     }
   }
 
-   bajarStock (Product product) {
+  void decreaseStock(Product product) {
     product.stock--;
     notifyListeners();
   }

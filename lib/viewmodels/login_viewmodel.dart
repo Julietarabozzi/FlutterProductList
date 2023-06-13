@@ -1,33 +1,21 @@
+// login_view_model.dart
+
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import '../Services/login_service.dart';
 
 class LoginViewModel extends ChangeNotifier {
   String? token;
+  final LoginService loginService;
+
+  LoginViewModel({required this.loginService});
 
   Future<bool> login(String username, String password) async {
-    const String apiUrl = "https://dummyjson.com/auth/login"; // Aquí va tu endpoint de login
-
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      body: {
-        "username": username,
-        "password": password
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final String responseString = response.body;
-
-      // Aquí puedes manejar la respuesta. Por ejemplo, podrías decodificar un token JWT y almacenarlo para su uso posterior
-      token = json.decode(responseString)['token'];
-      // ignore: avoid_print
+    try {
+      token = await loginService.login(username, password);
       print(token);
-
       return true;
-    } else {
-      // ignore: avoid_print
-      print(response.statusCode);
+    } catch (e) {
+      print(e);
       return false;
     }
   }

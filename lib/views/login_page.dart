@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
                     // Cambia aquí la ruta a la que quieres ir después del inicio de sesión
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      MaterialPageRoute(builder: (context) => HomePage()),
                     );
                   } else {
                     print("error al loguearse");
